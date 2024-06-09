@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "@prisma/client": "^5.15.0",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "node": "^20.14.0",
+    "nodemon": "^3.1.3",
+    "prisma": "^5.15.0"
+  },
+  "name": "sistarefa",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
