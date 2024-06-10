@@ -5,6 +5,7 @@ const path = require('path')
 
 //impotações
 const home = require('./src/routes/homeRoutes.js')
+const user = require('./src/routes/userRoutes.js')
 
 //middwares
 const app = express()
@@ -16,7 +17,7 @@ app.set('view engine', 'ejs')
 
 //use rotas
 app.use(home)
-
+app.use(user)
 
 //ligando o servidor
 app.listen(process.env.SERVER_PORT, () => {

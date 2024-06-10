@@ -54,7 +54,7 @@ model tarefas {
 }
 
 model usuariosTarefas {
-  Cargo Boolean @default(false)// tipo de usuario na tarefa: true =  responsável, false = participante
+  Cargo Boolean @default(false) // tipo de usuario na tarefa: true =  responsável, false = participante
 
   user     user    @relation(fields: [userId], references: [id_usuario])
   userId   Int

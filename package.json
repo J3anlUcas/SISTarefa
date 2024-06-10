@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@prisma/client": "^5.15.0",
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
@@ -14,7 +15,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "server.js"
+    "devStart": "server.js"
   },
   "author": "",
   "license": "ISC"
