@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt')
 const { PrismaClient } = require('@prisma/client')
+const { name } = require('ejs')
 const prisma = new PrismaClient()
 
 
@@ -8,19 +9,19 @@ exports.create = async (req, res) => {
         const { nome, usuario, email, acesso } = req.body
         const hashSenha = await bcrypt.hash(req.body.senha, 20)
 
-        var resUsuario = prisma.user.findMany({
+        var resUsuario = await prisma.user.findMany({
             where: {
                 usuario: usuario
             }
         })
-        var resEmail = prisma.user.findMany({
+        var resEmail = await prisma.user.findMany({
             where: {
                 email: email
             }
         })
 
         if (!resUsuario & !resEmail) {
-            prisma.user.create({
+            await prisma.user.create({
                 data: {
                     usuario: usuario,
                     senha: hashSenha,
@@ -39,12 +40,12 @@ exports.create = async (req, res) => {
     }
 }
 
-exports.delete = (req, res) => {
+exports.delete = async (req, res) => {
     var { id_usuario } = req.body
 
     if (!id_usuario || typeof id_usuario != "texto") return res.json({ mensagem: 'Digite algo válido.' })//caso seja nulo ou texto
 
-    var resUsuario = prisma.user.findUnique({
+    var resUsuario = await prisma.user.findUnique({
         where: {
             id_usuario
         }
@@ -53,12 +54,35 @@ exports.delete = (req, res) => {
     if (!resUsuario) {
         res.status(201).json({ mensagem: 'Esse usuario não existe!' })
     } else {
-        prisma.user.delete({
+        await prisma.user.delete({
             where: {
                 id_usuario: id_usuario
             }
         })
         res.status(200).json({ mensagem: 'usuario deletado.' })
+    }
+}
+
+exports.read = async (req, res) => {
+    try {
+        var filtroUser = req.params.usuario
+
+        if (!filtroUser) {
+            var usuarios = await prisma.user.findMany()
+            if (!usuarios) return res.status(201).json({ mensagem: 'não existe usuarios cadastrados na base.' })
+            res.status(200).json({ usuarios })
+        }
+        else {
+            var resUsuario = await prisma.user.findUnique({
+                where: {
+                    usuario: filtroUser
+                }
+            })
+
+            res.status(200).json({ usuarios: resUsuario })
+        }
+    } catch {
+        res.status(500).send()
     }
 }
 
