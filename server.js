@@ -1,19 +1,24 @@
+//dependencias
 require('dotenv').config()
 const express = require('express')
 const path = require('path')
+
+//impotações
+const home = require('./src/routes/homeRoutes.js')
+
+//middwares
 const app = express()
-const routes = require('./src/routes/homeRoutes.js')
 app.use(express.json())
 
-const { SERVER_PORT } = process.env;
+//renderizando paginas no servidpr
+app.set('views', path.resolve(__dirname, './src/views'))
+app.set('view engine', 'ejs')
 
- app.set('views', path.resolve(__dirname, './src/views'))    
- app.set('view engine', 'ejs')
+//use rotas
+app.use(home)
 
-app.use(routes)
 
-console.log(SERVER_PORT);
-
-app.listen(SERVER_PORT, () => {
+//ligando o servidor
+app.listen(process.env.SERVER_PORT, () => {
     console.log(`Servidor ON!🚀`)
 })  
