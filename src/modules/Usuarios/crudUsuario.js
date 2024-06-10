@@ -86,3 +86,53 @@ exports.read = async (req, res) => {
     }
 }
 
+exports.update = async (req, res) => {
+    try {
+        var usuario = req.body.usuario
+        var { dado, valor } = req.query
+
+        var resUsuario = await prisma.user.findMany({
+            where: {
+                usuario: usuario
+            }
+        })
+
+        if (!usuario || !resUsuario) return res.json({ mensagem: 'Digite um usuario válido.' }) //caso não seja digitado algo ou um usuario inexistente
+
+        switch (dado) {
+
+            case 'nome':
+                await prisma.user.update({
+                    where: {
+                        usuario: usuario
+                    },
+                    data: {
+                        nome: valor
+                    }
+                })
+                res.status(200).json({ mensagem: `O nome do usuario ${usuario} foi alterado para ${valor}` })
+                break;
+
+            // case 'senha':
+            // break
+            case 'acesso':
+                await prisma.user.update({
+                    where: {
+                        usuario: usuario
+                    },
+                    data: {
+                        acesso: valor
+                    }
+                })
+                res.status(200).json({ mensagem: `O acesso do usuario ${usuario} foi alterado para ${valor}` })
+                break;
+
+            default:
+                res.status(201).json({ mensagem: 'Não foi possivel achar esse campo para alteração' })
+                break;
+        }
+    } catch {
+        res.status(500).send()
+    }
+
+}

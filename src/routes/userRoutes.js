@@ -5,6 +5,6 @@ const crudUser = require('../modules/Usuarios/crudUsuario')
 route.post("/singUP", crudUser.create)
 route.delete("/user", crudUser.delete)
 route.get("/users",crudUser.read)
-//route.put("/user",crudUser.update)
+route.put("/user",crudUser.update)
 
 module.exports = route
