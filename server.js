@@ -6,7 +6,7 @@ const path = require('path')
 //impotações
 const home = require('./src/routes/homeRoutes.js')
 const user = require('./src/routes/userRoutes.js')
-
+const project = require('./src/routes/projetoRutes.js')
 //middwares
 const app = express()
 app.use(express.json())
@@ -18,8 +18,9 @@ app.set('view engine', 'ejs')
 //use rotas
 app.use(home)
 app.use(user)
+app.use(project)
 
 //ligando o servidor
 app.listen(process.env.SERVER_PORT, () => {
     console.log(`Servidor ON!🚀`)
-})  
+})    

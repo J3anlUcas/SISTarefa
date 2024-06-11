@@ -2,11 +2,11 @@ const bcrypt = require('bcrypt')
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
-
-exports.create = async (req, res) => {
+exports.creat = async (req, res) => {
     try {
-        const { nome, usuario, email, acesso } = req.body
-        const hashSenha = await bcrypt.hash(req.body.senha, 20)
+        const { senha, nome, usuario, email, acesso } = req.body
+        //const hashSenha = await bcrypt.hash(req.body.senha, 20)
+        if (nome,senha,usuario,email == null) return res.status(201).json({ mensagem: 'Digite um valor valido.' })
 
         var resUsuario = await prisma.user.findMany({
             where: {
@@ -17,21 +17,24 @@ exports.create = async (req, res) => {
             where: {
                 email: email
             }
-        })
 
-        if (!resUsuario & !resEmail) {
+        })
+        
+
+        if (!resUsuario[0] & !resEmail[0]) {
             await prisma.user.create({
                 data: {
                     usuario: usuario,
-                    senha: hashSenha,
+                    senha: senha,
                     nome: nome,
                     email: email,
                     acesso: acesso
                 }
             })
+            res.status(200).json({ mensagem: 'usuario criado com sucesso' })
         }
         else {
-            res.json({ mensagem: 'usuario ou email inválido.' })
+            res.json({ mensagem: 'usuario ou email já está em uso' })
         }
 
     } catch {
@@ -42,7 +45,7 @@ exports.create = async (req, res) => {
 exports.delete = async (req, res) => {
     var { id_usuario } = req.body
 
-    if (!id_usuario || typeof id_usuario != "texto") return res.json({ mensagem: 'Digite algo válido.' })//caso seja nulo ou texto
+    if (id_usuario == null || typeof id_usuario !== Number) return res.json({ mensagem: 'Digite um valor válido.' })//caso seja nulo ou texto
 
     var resUsuario = await prisma.user.findUnique({
         where: {
@@ -64,7 +67,7 @@ exports.delete = async (req, res) => {
 
 exports.read = async (req, res) => {
     try {
-        var filtroUser = req.params.usuario
+        var filtroUser = req.query.usuario
 
         if (!filtroUser) {
             var usuarios = await prisma.user.findMany()
@@ -88,7 +91,7 @@ exports.read = async (req, res) => {
 exports.update = async (req, res) => {
     try {
         var usuario = req.body.usuario
-        var { dado, valor } = req.query
+        var { dado, valor } = req.body
 
         var resUsuario = await prisma.user.findMany({
             where: {
