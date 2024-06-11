@@ -31,7 +31,7 @@ model user {
 model projeto {
   id_projeto  Int      @id @default(autoincrement())
   nome        String   @unique
-  data_inicio DateTime
+  data_inicio DateTime 
 
   gerente    user @relation(fields: [id_gerente], references: [id_usuario])
   id_gerente Int
