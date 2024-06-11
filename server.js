@@ -19,7 +19,7 @@ app.set('view engine', 'ejs')
 app.use(home)
 app.use(user)
 app.use(project)
-
+3
 //ligando o servidor
 app.listen(process.env.SERVER_PORT, () => {
     console.log(`Servidor ON!🚀`)
