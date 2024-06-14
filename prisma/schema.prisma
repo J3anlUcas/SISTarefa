@@ -8,10 +8,10 @@ datasource db {
   provider = "sqlserver"
   url      = env("DATABASE_URL")
 }
+
 generator client {
   provider = "prisma-client-js"
 }
-
 
 model user {
   id_usuario       Int               @id @default(autoincrement())
@@ -31,10 +31,11 @@ model user {
 model projeto {
   id_projeto  Int      @id @default(autoincrement())
   nome        String   @unique
-  data_inicio DateTime 
+  data_inicio DateTime
 
-  gerente    user @relation(fields: [id_gerente], references: [id_usuario])
+  gerente    user      @relation(fields: [id_gerente], references: [id_usuario])
   id_gerente Int
+  tarefas    tarefas[]
 
   @@map("tbl_projetos")
 }
@@ -48,7 +49,11 @@ model tarefas {
   descricao        String    @db.VarChar(500)
   concluida        Boolean   @default(false)
 
-  user usuariosTarefas[]
+
+  project    projeto @relation(fields: [id_projeto], references: [id_projeto])
+  id_projeto Int
+  user              usuariosTarefas[]
+ 
 
   @@map("tbl_tarefas")
 }

@@ -5,7 +5,12 @@ const prisma = new PrismaClient()
 exports.creat = async (req, res) => {
     try {
         const { senha, nome, usuario, email, acesso } = req.body
-        const hashSenha = await bcrypt.hash(req.body.senha, 10)
+        
+        const saltRounds = 10;
+        let salt = await bcrypt.genSalt(saltRounds);
+        console.log(salt);
+       
+        const hashSenha = await bcrypt.hash(req.body.senha, salt)
         if (nome,senha,usuario,email == null) return res.status(201).json({ mensagem: 'Digite um valor valido.' })
 
         var resUsuario = await prisma.user.findMany({

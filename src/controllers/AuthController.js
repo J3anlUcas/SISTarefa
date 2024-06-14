@@ -4,21 +4,22 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
 require('dotenv').config()
-const { SECRET } = process.env
 
 
 exports.login = async (req, res) => {
+    const { SECRET } = process.env
+    const { usuario, senha } = req.body
     try {
         var validarUsuario = await prisma.user.findUnique({
             where: {
-                usuario: req.body.usuario
+                usuario: usuario
             }
         })
         if (validarUsuario == null) {
             return res.status(401).json({ mensagem: "Credenciais inválidas." })
         }
 
-        const validarSenha = bcrypt.compareSync(req.body.senha, validarUsuario.senha)
+        const validarSenha = await bcrypt.compare(senha, validarUsuario.senha)
 
         if (!validarSenha) {
             return res.status(401).json({ mensagem: "Credenciacias inválidas." })
