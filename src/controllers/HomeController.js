@@ -1,3 +1,4 @@
+const swaggerJson = require('/Users/06336828107/OneDrive/Documentos/IESB - 3ªsemestre/BACKEND/SISTarefa/swagger.json')
 exports.hom = (req, res) => {
     var date = new Date()
     var dia = date.getDate().toString().padStart(2, '0')
@@ -7,6 +8,7 @@ exports.hom = (req, res) => {
     var minuto = date.getMinutes().toString().padStart(2, '0')
       
     res.render('index',({
+        swaggerJson,
         dia,
         mes,
         ano,
