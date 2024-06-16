@@ -5,18 +5,36 @@ exports.create = async (req, res) => {
     try {
         var { nome, data_inicio, id_gerente } = req.body
         //testendo se o valor é nulo
-        if (nome, data_inicio, id_gerente == null || typeof id_gerente !== Number) return res.status(201).json({ mensage: 'Digite um valor invalido.' })
+        if (nome, data_inicio, id_gerente == null) return res.status(201).json({ mensage: 'Digite um valor invalido.' })
 
         var searchGerente = await prisma.user.findMany({
             where: {
                 id_usuario: id_gerente,
                 AND: {
-                    acesso: 0, OR: 1
+                    acesso: 0
                 }
             }
         })
+
         //testando de o codigo do gerente é válido
-        if (!searchGerente[0]) return res.status(201), json({ mensage: 'Esse usuario não existe ou não tem permissão para ser gerente' })
+        if (!searchGerente[0]) return res.status(201).json({ mensage: 'Esse usuario não existe ou não tem permissão para ser gerente' })
+
+            const projeto = await prisma.projeto.create({
+                data: {
+                  nome: nome,
+                  data_inicio: data_inicio
+                }
+              });
+
+        // const user = await prisma.profile.create({
+        //     data: {
+        //       bio: 'Hello World',
+        //       user: {
+        //         connect: { id: 42 }, // sets userId of Profile record
+        //       },
+        //     },
+        //   })
+
         res.status(200).json({
             projeto: nome,
             data_inicio: data_inicio,
@@ -109,7 +127,7 @@ exports.update = async (req, res) => {
                 res.status(200).json({ mensagem: `O nome do projeto ${nomeProjeto} foi alterado para ${valor}` })
                 break;
 
-            
+
             case 'gerente':
                 var { id_gerente } = req.body
 

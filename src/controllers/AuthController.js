@@ -7,19 +7,23 @@ require('dotenv').config()
 
 
 exports.login = async (req, res) => {
-    const { SECRET } = process.env
-    const { usuario, senha } = req.body
+    const SECRET = process.env.SECRET
+    const { user, senha } = req.body
+
     try {
         var validarUsuario = await prisma.user.findUnique({
             where: {
-                usuario: usuario
+                usuario: user
             }
         })
+
         if (validarUsuario == null) {
             return res.status(401).json({ mensagem: "Credenciais inválidas." })
         }
+        
+        var hash = validarUsuario.senha.trim()
+        const validarSenha = await bcrypt.compare(senha, hash)
 
-        const validarSenha = await bcrypt.compare(senha, validarUsuario.senha)
 
         if (!validarSenha) {
             return res.status(401).json({ mensagem: "Credenciacias inválidas." })

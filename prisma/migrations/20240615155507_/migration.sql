@@ -7,7 +7,7 @@ CREATE TABLE [dbo].[tbl_usuarios] (
     [id_usuario] INT NOT NULL IDENTITY(1,1),
     [usuario] NVARCHAR(1000) NOT NULL,
     [nome] VARCHAR(100) NOT NULL,
-    [senha] CHAR(20) NOT NULL,
+    [senha] CHAR(200) NOT NULL,
     [email] VARCHAR(100) NOT NULL,
     [data_criacao] DATETIME2 NOT NULL CONSTRAINT [tbl_usuarios_data_criacao_df] DEFAULT CURRENT_TIMESTAMP,
     [data_modificacao] DATETIME2,

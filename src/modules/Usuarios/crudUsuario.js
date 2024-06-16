@@ -50,7 +50,7 @@ exports.creat = async (req, res) => {
 exports.delete = async (req, res) => {
     var { id_usuario } = req.body
 
-    if (id_usuario == null || typeof id_usuario !== Number) return res.json({ mensagem: 'Digite um valor válido.' })//caso seja nulo ou texto
+    if (id_usuario == null) return res.json({ mensagem: 'Digite um valor válido.' })//caso seja nulo ou texto
 
     var resUsuario = await prisma.user.findUnique({
         where: {
