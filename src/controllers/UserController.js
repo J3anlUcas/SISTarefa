@@ -6,8 +6,8 @@ exports.users = async (req, res) => {
     var { filtro1, filtro2, filtro3, valor } = req.body
     var { data_inicio, data_fim } = req.body
 
-    if (!filtro) {
-        res.status(401).json({ mensagem: "digite oque será filtrado!" })
+    if (!filtro1) {
+        res.status(401).json({ mensagem: "digite o que será filtrado!" })
     }
 
     if (valor != null) {

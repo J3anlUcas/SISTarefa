@@ -2,6 +2,7 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
 exports.create = async (req, res) => {
+
     try {
         var { nome, data_inicio, id_gerente } = req.body
         //testendo se o valor é nulo
@@ -74,7 +75,7 @@ exports.delete = async (req, res) => {
 
 exports.read = async (req, res) => {
     try {
-        var {filtro} = req.query
+        var { filtro } = req.query
 
         if (filtro == null) {
 
@@ -111,7 +112,7 @@ exports.update = async (req, res) => {
             }
         })
 
-        if (procurarProjetos) return res.json({ mensagem: 'Nome já em uso' }) 
+        if (procurarProjetos) return res.json({ mensagem: 'Nome já em uso' })
         if (nomeProjeto, valor == null || !resProjeto[0]) return res.json({ mensagem: 'Digite um valor válido.' }) //caso não seja digitado algo ou um projeto inexistente
 
         switch (dado) {

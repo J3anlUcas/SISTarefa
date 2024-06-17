@@ -5,6 +5,6 @@ const crudTarefas = require("../modules/Tarefas/crudTarefa")
 const midwAutendicação = require("../middlewares/validarToken")
 
 
-routes.post("/tarefa", crudTarefas.create)
+routes.post("/tarefa",midwAutendicação.validarToken, crudTarefas.create)
 
 module.exports = routes

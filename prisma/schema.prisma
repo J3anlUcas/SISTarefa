@@ -22,6 +22,7 @@ model user {
   data_criacao     DateTime          @default(now())
   data_modificacao DateTime?         @updatedAt
   acesso           Int               @default(2) //Tipos de usuarios: 0 = admin, 1 = gerente, 2 = comum
+ 
   projetos         projeto[]
   tarefa           usuariosTarefas[]
 
@@ -50,7 +51,7 @@ model tarefas {
   descricao        String    @db.VarChar(500)
   concluida        Boolean   @default(false)
 
-  id_projeto        projeto @relation(fields: [projetoId_projeto], references: [id_projeto])
+  projeto        projeto @relation(fields: [projetoId_projeto], references: [id_projeto])
   projetoId_projeto Int
 
   user usuariosTarefas[]
