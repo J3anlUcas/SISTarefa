@@ -1,4 +1,4 @@
-const swaggerJson = require('/Users/06336828107/OneDrive/Documentos/IESB - 3ªsemestre/BACKEND/SISTarefa/swagger.json')
+const swaggerJson = require('/Users/2314291055/jean-back/SISTarefa/swagger.json')
 exports.hom = (req, res) => {
     var date = new Date()
     var dia = date.getDate().toString().padStart(2, '0')

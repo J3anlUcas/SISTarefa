@@ -11,7 +11,7 @@ const userController = require('../controllers/UserController')
 //TOKEN
 route.post("/login", autendicação.login)
 //CRUD
-route.post("/users", validaçãoToken.validarToken, crudUser.creat)
+route.post("/users", crudUser.creat)
 route.delete("/users", validaçãoToken.validarToken, crudUser.delete)
 route.get("/users", validaçãoToken.validarToken, crudUser.read)
 route.put("/users", validaçãoToken.validarToken, crudUser.update)

@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model user {
+  id_usuario       Int               @id @default(autoincrement())
+  usuario          String            @unique
+  nome             String            @db.VarChar(100)
+  senha            String            @db.Char(200)
+  email            String            @unique @db.VarChar(100)
+  data_criacao     DateTime          @default(now())
+  data_modificacao DateTime?         @updatedAt
+  acesso           Int               @default(2) //Tipos de usuarios: 0 = admin, 1 = gerente, 2 = comum
+ 
+  projetos         projeto[]
+  tarefa           usuariosTarefas[]
+
+  @@map("tbl_usuarios")
+}
+
+model projeto {
+  id_projeto  Int       @id @default(autoincrement())
+  nome        String?   @unique
+  data_inicio DateTime?
+
+  gerente    user @relation(fields: [id_gerente], references: [id_usuario])
+  id_gerente Int
+
+  tarefas tarefas[]
+
+  @@map("tbl_projetos")
+}
+
+model tarefas {
+  id_tarefa        Int       @id @default(autoincrement())
+  data_criacao     DateTime  @default(now())
+  data_modificacao DateTime? @updatedAt
+  data_inicio      DateTime?
+  data_termino     DateTime?
+  descricao        String    @db.VarChar(500)
+  concluida        Boolean   @default(false)
+
+  projeto        projeto @relation(fields: [projetoId_projeto], references: [id_projeto])
+  projetoId_projeto Int
+
+  user usuariosTarefas[]
+
+  @@map("tbl_tarefas")
+}
+
+model usuariosTarefas {
+  Cargo Boolean @default(false) // tipo de usuario na tarefa: true =  responsável, false = participante
+
+  user     user    @relation(fields: [userId], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+  userId   Int
+  tarefa   tarefas @relation(fields: [tarefaId], references: [id_tarefa], onDelete: NoAction, onUpdate: NoAction)
+  tarefaId Int
+
+  @@id([userId, tarefaId])
+}
