@@ -12,7 +12,7 @@ exports.validarToken = async (req, res, next) => {
         const [, token] = authorization.split(" ")
 
         jwt.verify(token, SECRET, { expiresIn: 300 })
-        module.exports = token
+
         return next()
     }
     catch {
