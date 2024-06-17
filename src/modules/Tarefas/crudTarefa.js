@@ -3,8 +3,8 @@ const prisma = new PrismaClient()
 
 
 exports.create = async (req, res) => {
-   try{
-    
+    try {
+
     }
     catch {
         res.status(500).send()

@@ -19,21 +19,18 @@ exports.create = async (req, res) => {
         //testando de o codigo do gerente é válido
         if (!searchGerente[0]) return res.status(201).json({ mensage: 'Esse usuario não existe ou não tem permissão para ser gerente' })
 
-            const projeto = await prisma.projeto.create({
-                data: {
-                  nome: nome,
-                  data_inicio: data_inicio
-                }
-              });
+        const inicio = new Date(data_inicio).toISOString()
 
-        // const user = await prisma.profile.create({
-        //     data: {
-        //       bio: 'Hello World',
-        //       user: {
-        //         connect: { id: 42 }, // sets userId of Profile record
-        //       },
-        //     },
-        //   })
+        const projeto = await prisma.projeto.create({
+            data: {
+                nome: nome,
+                data_inicio: inicio,
+                gerente: {
+                    connect: { id_usuario: id_gerente }
+                }
+            }
+        });
+
 
         res.status(200).json({
             projeto: nome,
@@ -77,19 +74,17 @@ exports.delete = async (req, res) => {
 
 exports.read = async (req, res) => {
     try {
-        var projetoFiltro = req.query.usuario
+        var {filtro} = req.query
 
-        if (!projetoFiltro) {
+        if (filtro == null) {
+
             var projeto = await prisma.projeto.findMany()
-
-            if (!projeto) return res.status(201).json({ mensagem: 'não existe usuarios cadastrados na base.' })
-
-            res.status(200).json({ usuarios })
+            res.status(200).json({ projeto })
         }
         else {
             var resUsuario = await prisma.projeto.findUnique({
                 where: {
-                    nome: projetoFiltro
+                    nome: filtro
                 }
             })
 
@@ -110,7 +105,13 @@ exports.update = async (req, res) => {
                 nome: nomeProjeto
             }
         })
+        var procurarProjetos = await prisma.projeto.findMany({
+            where: {
+                nome: valor
+            }
+        })
 
+        if (procurarProjetos) return res.json({ mensagem: 'Nome já em uso' }) 
         if (nomeProjeto, valor == null || !resProjeto[0]) return res.json({ mensagem: 'Digite um valor válido.' }) //caso não seja digitado algo ou um projeto inexistente
 
         switch (dado) {

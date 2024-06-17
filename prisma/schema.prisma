@@ -29,14 +29,14 @@ model user {
 }
 
 model projeto {
-  id_projeto  Int      @id @default(autoincrement())
-  nome        String?  @unique
+  id_projeto  Int       @id @default(autoincrement())
+  nome        String?   @unique
   data_inicio DateTime?
 
-  gerente    user      @relation(fields: [id_gerente], references: [id_usuario])
+  gerente    user @relation(fields: [id_gerente], references: [id_usuario])
   id_gerente Int
 
-  tarefas    tarefas[]
+  tarefas tarefas[]
 
   @@map("tbl_projetos")
 }
@@ -50,7 +50,7 @@ model tarefas {
   descricao        String    @db.VarChar(500)
   concluida        Boolean   @default(false)
 
-  id_projeto        projeto @relation(references: [id_projeto], fields: [projetoId_projeto])
+  id_projeto        projeto @relation(fields: [projetoId_projeto], references: [id_projeto])
   projetoId_projeto Int
 
   user usuariosTarefas[]
